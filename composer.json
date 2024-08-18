@@ -1,0 +1,29 @@
+{
+    "name": "inilim/pseudo_uuid",
+    "description": "pseudo_uuid",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Inilim\\PseudoUUID\\": "src/"
+        },
+        "files": [
+            "function.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "inilim"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "inilim/string": "dev-main"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "phpstan/phpstan": "@stable",
+        "inilim/dump": "dev-main"
+    }
+}
