@@ -4,9 +4,14 @@ namespace Inilim\PseudoUUID;
 
 class UUID
 {
+   function v7FromTimestamp(int $time): string
+   {
+      return \dechex($time) . '-' . \_str()->after($this->v4(), '-');
+   }
+
    function v7(): string
    {
-      return \dechex(\time()) . '-' . \_str()->after($this->v4(), '-');
+      return $this->v7FromTimestamp(\time());
    }
 
    function v4(): string
