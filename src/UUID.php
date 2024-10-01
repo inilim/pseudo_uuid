@@ -9,6 +9,11 @@ class UUID
       return \dechex($time) . '-' . \_str()->after($this->v4(), '-');
    }
 
+   function toByte(string $uuid): string
+   {
+      return \pack('H*', \str_replace('-', '', $uuid));
+   }
+
    function v7(): string
    {
       return $this->v7FromTimestamp(\time());
