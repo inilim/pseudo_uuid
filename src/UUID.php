@@ -2,11 +2,11 @@
 
 namespace Inilim\PseudoUUID;
 
-class UUID
+final class UUID
 {
    function v7FromTimestamp(int $time): string
    {
-      return \dechex($time) . '-' . \_str()->after($this->v4(), '-');
+      return \dechex($time) . '-' . $this->after($this->v4(), '-');
    }
 
    function toByte(string $uuid): string
@@ -32,5 +32,13 @@ class UUID
          . \substr($s, 16, 4)
          . '-'
          . \substr($s, 20, 12);
+   }
+
+   /**
+    * Return the remainder of a string after the first occurrence of a given value.
+    */
+   protected function after(string $subject, string $search): string
+   {
+      return $search === '' ? $subject : \array_reverse(\explode($search, $subject, 2))[0];
    }
 }
