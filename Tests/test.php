@@ -6,6 +6,5 @@ use Inilim\Dump\Dump;
 
 // Dump::init();
 
-echo _uuid()->v4();
-echo PHP_EOL;
-echo _uuid()->_v7();
+
+var_dump(_uuid()->getBytes(_uuid()->v7()));
