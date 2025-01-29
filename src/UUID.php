@@ -4,41 +4,41 @@ namespace Inilim\PseudoUUID;
 
 final class UUID
 {
-   function v7FromTimestamp(int $time): string
-   {
-      return \dechex($time) . '-' . $this->after($this->v4(), '-');
-   }
-
-   function toByte(string $uuid): string
+   /**
+    * @return string
+    */
+   function toByte(string $uuid)
    {
       return \pack('H*', \str_replace('-', '', $uuid));
    }
 
-   function v7(): string
+   /**
+    * @return string
+    */
+   function v7()
    {
-      return $this->v7FromTimestamp(\time());
-   }
-
-   function v4(): string
-   {
-      $s = \bin2hex(\random_bytes(16));
-
-      return \substr($s, 0, 8)
-         . '-'
-         . \substr($s, 8, 4)
-         . '-'
-         . \substr($s, 12, 4)
-         . '-'
-         . \substr($s, 16, 4)
-         . '-'
-         . \substr($s, 20, 12);
+      $unixMs = \intval(\microtime(true) * 1000);
+      $s = \random_bytes(10);
+      $s[0] = \chr((\ord($s[0]) & 0x0f) | 0x70); // set version
+      $s[2] = \chr((\ord($s[2]) & 0x3f) | 0x80); // set variant
+      return \vsprintf(
+         '%s%s-%s-%s-%s-%s%s%s',
+         \str_split(
+            \str_pad(\dechex($unixMs), 12, '0', \STR_PAD_LEFT) .
+               \bin2hex($s),
+            4
+         )
+      );
    }
 
    /**
-    * Return the remainder of a string after the first occurrence of a given value.
+    * @return string
     */
-   protected function after(string $subject, string $search): string
+   function v4()
    {
-      return $search === '' ? $subject : \array_reverse(\explode($search, $subject, 2))[0];
+      $s = \random_bytes(16);
+      $s[6] = \chr(\ord($s[6]) & 0x0f | 0x40); // set version to 0100
+      $s[8] = \chr(\ord($s[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+      return \vsprintf('%s%s-%s-%s-%s-%s%s%s', \str_split(\bin2hex($s), 4));
    }
 }
